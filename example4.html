@@ -1,15 +1,15 @@
 <html>
 
-  <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <!--<script src="https://www.thingspeak.com/assets/application-927d1479ab2235e91ae25cb56d33b211.js"
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <!--<script src="https://www.thingspeak.com/assets/application-927d1479ab2235e91ae25cb56d33b211.js"
      type="text/javascript"></script>-->
-    <script src="http://code.highcharts.com/stock/highstock.js"></script>
-    <script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
-    <script src="https://rawgithub.com/highslide-software/export-csv/master/export-csv.js"></script>
-    <script type="text/javascript">
-      // Webpage Javascript to chart multiple ThingSpeak channels on two axis with navigator, load historical data, and export cvs data.
+  <script src="http://code.highcharts.com/stock/highstock.js"></script>
+  <script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+  <script src="https://rawgithub.com/highslide-software/export-csv/master/export-csv.js"></script>
+  <script type="text/javascript">
+    // Webpage Javascript to chart multiple ThingSpeak channels on two axis with navigator, load historical data, and export cvs data.
       // Public Domain, by turgo.
       //  The charting library is called HighStock.  It is awesome!  HighSoft, the owners say, 
       //   "Do you want to use Highstock for a personal or non-profit project? Then you can use Highchcarts for 
@@ -19,7 +19,11 @@
       // put your ThingSpeak Channel#, Channel Name, and API keys here.
       // fieldList shows which field you want to load, and which axis to display that field on, 
       // the 'T' Temperature left axis, or the 'O' Other right axis.
+    
+    
+      //*** Thingsspeak Channels und Fields werden definert --> channelKeys
       var channelKeys = [];
+    
       channelKeys.push({
         channelNumber: 9,
         name: 'Hans my_house',
@@ -32,6 +36,7 @@
           axis: 'T'
         }]
       });
+    
       channelKeys.push({
         channelNumber: 5683,
         name: 'Sam Rogers Solar System',
@@ -56,6 +61,7 @@
           axis: 'T'
         }]
       });
+    
       channelKeys.push({
         channelNumber: 9354,
         name: 'CRYSTAL CITY WEATHER Fault',
@@ -80,10 +86,14 @@
           axis: 'O'
         }]
       });
+    
+    
 
       // user's timezone offset
       var myOffset = new Date().getTimezoneOffset();
 
+    
+    
       // converts date format from JSON
       function getChartDate(d) {
         // get the data using javascript's date object (year, month, day, hour, minute, second)
@@ -91,6 +101,8 @@
         // offset in minutes is converted to milliseconds and subtracted so that chart's x-axis is correct
         return Date.UTC(d.substring(0, 4), d.substring(5, 7) - 1, d.substring(8, 10), d.substring(11, 13), d.substring(14, 16), d.substring(17, 19)) - (myOffset * 60000);
       }
+    
+    
 
       // Hide all series, via 'Hide All' button.  Then user can click on serries name in legent to show series of interest.      
       function HideAll() {
@@ -101,24 +113,33 @@
           dynamicChart.series[index].hide();
           //window.console && console.log('Series Number:',index,' Name:',dynamicChart.series[index].name);
         }
-        //});
-
       }
+    
+    
 
       //  This is where the chart is generated.
       $(document).ready(function() {
+        
         //Add Channel Load Menu
         var menu = document.getElementById("Channel Select");
+        
+        
         for (var channelIndex = 0; channelIndex < channelKeys.length; channelIndex++) // iterate through each channel
         {
           window.console && console.log('Name', channelKeys[channelIndex].name);
           var menuOption = new Option(channelKeys[channelIndex].name, channelIndex);
           menu.options.add(menuOption, channelIndex);
         }
+        
+        
         var last_date; // variable for the last date added to the chart
+        
+        
         window.console && console.log('Testing console');
         //make series numbers for each field
         var seriesCounter = 0
+        
+        
         for (var channelIndex = 0; channelIndex < channelKeys.length; channelIndex++) // iterate through each channel
         {
           for (var fieldIndex = 0; fieldIndex < channelKeys[channelIndex].fieldList.length; fieldIndex++) // iterate through each channel
@@ -127,27 +148,34 @@
             seriesCounter++;
           }
         }
+        
+        
         //make calls to load data from each channel into channelKeys array now
         // draw the chart when all the data arrives, later asyncronously add history
         for (var channelIndex = 0; channelIndex < channelKeys.length; channelIndex++) // iterate through each channel
         {
           channelKeys[channelIndex].loaded = false;
           loadThingSpeakChannel(channelIndex, channelKeys[channelIndex].channelNumber, channelKeys[channelIndex].key, channelKeys[channelIndex].fieldList);
-
         }
+        
+        
         //window.console && console.log('Channel Keys',channelKeys);
 
+        
         // load the most recent 2500 points (fast initial load) from a ThingSpeak channel into a data[] array and return the data[] array
         function loadThingSpeakChannel(sentChannelIndex, channelNumber, key, sentFieldList) {
           var fieldList = sentFieldList;
           var channelIndex = sentChannelIndex;
+          
           // get the Channel data with a webservice call
           $.getJSON('https://www.thingspeak.com/channels/' + channelNumber + '/feed.json?callback=?&amp;offset=0&amp;results=2500;key=' + key, function(data) {
+            
               // if no access
               if (data == '-1') {
                 $('#chart-container').append('This channel is not public.  To embed charts, the channel must be public or a read key must be specified.');
                 window.console && console.log('Thingspeak Data Loading Error');
               }
+            
               for (var fieldIndex = 0; fieldIndex < fieldList.length; fieldIndex++) // iterate through each field
               {
                 fieldList[fieldIndex].data = [];
@@ -165,6 +193,7 @@
                 }
                 fieldList[fieldIndex].name = eval("data.channel.field" + fieldList[fieldIndex].field);
               }
+            
               window.console && console.log('getJSON field name:', fieldList[0].name);
               channelKeys[channelIndex].fieldList = fieldList;
               channelKeys[channelIndex].loaded = true;
@@ -179,13 +208,20 @@
               alert('getJSON request failed! ');
             });
         }
+        
+        
         // create the chart when all data is loaded
         function createChart() {
+          
+          
           // specify the chart options
           var chartOptions = {
+            
             chart: {
               renderTo: 'chart-container',
               zoomType: 'y',
+              
+              
               events: {
                 load: function() {
                   if ('true' === 'true' && (''.length < 1 && ''.length < 1 && ''.length < 1 && ''.length < 1 && ''.length < 1)) {
@@ -223,8 +259,6 @@
                                 //window.console && console.log('update series name:',dynamicChart.series[chartSeriesName].name);
                                 //window.console && console.log('channel keys name:',channelKeys[channelIndex].fieldList[fieldIndex].name);
                               }
-
-
                             });
                           })(channelIndex);
                         }
@@ -233,7 +267,11 @@
                   }
                 }
               }
+              
+              
             },
+            
+            
             rangeSelector: {
               buttons: [{
                 count: 30,
@@ -266,9 +304,13 @@
               inputEnabled: true,
               selected: 1
             },
+            
+            
             title: {
               text: ''
             },
+            
+            
             plotOptions: {
               line: {
                 gapSize: 5
@@ -289,6 +331,8 @@
                 borderWidth: 0
               }
             },
+            
+            
             tooltip: {
               valueDecimals: 1,
               valueSuffix: '°F',
@@ -300,6 +344,8 @@
                 //return this.series.name + ':<b>' + this.y + '</b>' + n + '<br/>' + d.toDateString() + '<br/>' + d.toTimeString().replace(/\(.*\)/, "");
                 //}
             },
+            
+            
             xAxis: {
               type: 'datetime',
               ordinal: false,
@@ -343,6 +389,7 @@
               //series: [{data:[[getChartDate("2013-06-16T00:32:40Z"),75]]}]      
           };
 
+          
           // add all Channel data to the chart
           for (var channelIndex = 0; channelIndex < channelKeys.length; channelIndex++) // iterate through each channel
           {
@@ -358,13 +405,17 @@
               });
             }
           }
+          
+          
           // set chart labels here so that decoding occurs properly
           //chartOptions.title.text = data.channel.name;
           chartOptions.xAxis.title.text = 'Date';
 
+          
           // draw the chart
           dynamicChart = new Highcharts.StockChart(chartOptions);
 
+          
           // update series number to account for the navigator series (The historical series at the bottom) which is the first series.
           for (var channelIndex = 0; channelIndex < channelKeys.length; channelIndex++) // iterate through each channel
           {
@@ -457,23 +508,25 @@
           }
         });
       }
+  </script>
+  <title>ThingSpeakMultichannel</title>
+</head>
 
-    </script>
-    <title>ThingSpeakMultichannel</title>
-  </head>
-
-  <body style="                      background-color: white;">
-    <div id="chart-container" style="height: 600px;">
-      <br> Highstock Chart Here
-      <br>
-    </div>
-    <div id="below chart">
-      <button style="width: 89px; margin-top: -18px;" value="Hide All" name="Hide All Button" onclick="HideAll();">Hide All
+  
+  
+  
+<body style="                      background-color: white;">
+  <div id="chart-container" style="height: 600px;">
+    <br> Highstock Chart Here
+    <br>
+  </div>
+  <div id="below chart">
+    <button style="width: 89px; margin-top: -18px;" value="Hide All" name="Hide All Button" onclick="HideAll();">Hide All
       </button>
-      <button style="width: 162px; margin-top: -18px;" value="Load More Data" name="Load More Data" onclick="loadOneChannel();">Load More Historical Data </button>
-      <select id="Channel Select">
+    <button style="width: 162px; margin-top: -18px;" value="Load More Data" name="Load More Data" onclick="loadOneChannel();">Load More Historical Data </button>
+    <select id="Channel Select">
       </select>
-      <select id="Loads">
+    <select id="Loads">
         <option value="1">1 Load</option>
         <option value="2">2 Loads</option>
         <option value="3">3 Loads</option>
@@ -491,9 +544,9 @@
         <option value="40">40 Loads</option>
         <option value="50">50 Loads</option>
       </select>
-      <input id="Update" name="Update" type="checkbox"><span style="font-family: Lucida Grande;">Update
+    <input id="Update" name="Update" type="checkbox"><span style="font-family: Lucida Grande;">Update
         Chart</span> <span id="Latency" style="font-family: Lucida Grande;">(Latency)</span>
-    </div>
-  </body>
+  </div>
+</body>
 
 </html>
