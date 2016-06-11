@@ -1,0 +1,23 @@
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<script > $(function() {
+  $('#container').highcharts({
+
+    yAxis: {
+      plotLines: [{
+        value: 0,
+        width: 1,
+        color: '#808080'
+      }]
+    },
+
+    series: [{
+      name: 'London',
+      data: [3.9, 4.2, 5.7, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+    }]
+  });
+});
+
+</script>
