@@ -15,9 +15,10 @@
     var channelsLoaded = 0;
     var channelKeys = [];
 
+    /*
     channelKeys.push({
       channelNumber: 9,
-      name: 'Wetterstation',
+      name: 'Test',
       key: 'XXXXXXXXXXXXXXXX',
       fieldList: [{
         field: 1,
@@ -27,33 +28,31 @@
         axis: 'T'
       }]
     });
+    */
 
-    /*
+
       channelKeys.push({
-        channelNumber: 5683,
-        name: 'Sam Rogers Solar System',
+        channelNumber: 122864,
+        name: 'Wetterstation Meersburg',
         key: 'XXXXXXXXXXXXXXXX',
         fieldList: [{
-          field: 1,
+          field: 1, //Temperature DHT22
           axis: 'T'
         }, {
-          field: 2,
-          axis: 'T'
+          field: 2, //Humidity DHT22
+          axis: 'O'
         }, {
-          field: 3,
-          axis: 'T'
+          field: 3, //Dew Point Temperature
+          axis: 'O'
         }, {
-          field: 4,
-          axis: 'T'
+          field: 4, //Pressure BMP180
+          axis: 'O'
         }, {
-          field: 5,
-          axis: 'T'
-        }, {
-          field: 6,
+          field: 5, //Temperature BMP180
           axis: 'T'
         }]
       });
-    */
+
 
     /*
       channelKeys.push({
