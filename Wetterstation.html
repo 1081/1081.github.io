@@ -211,6 +211,9 @@
           chart: {
             renderTo: 'chart-container',
             zoomType: 'y',
+            spacingLeft: 40,
+            spacingRight: 40,
+            spacingTop: 20,
 
 
             events: {
@@ -267,41 +270,46 @@
             buttons: [{
               count: 30,
               type: 'minute',
-              text: '30M'
+              text: '30 min'
             }, {
               count: 12,
               type: 'hour',
-              text: '12H'
+              text: '12 h' // data grouping ist ganz nett: http://jsfiddle.net/gh/get/jquery/1.7.2/highslide-software/highcharts.com/tree/master/samples/stock/rangeselector/datagrouping/
             }, {
               count: 1,
               type: 'day',
-              text: 'D'
+              text: 'Tag'
             }, {
               count: 1,
               type: 'week',
-              text: 'W'
+              text: 'Woche'
             }, {
               count: 1,
               type: 'month',
-              text: 'M'
+              text: 'Monat'
             }, {
               count: 1,
               type: 'year',
-              text: 'Y'
+              text: 'Jahr'
             }, {
               type: 'all',
-              text: 'All'
+              text: 'max'
             }],
             inputEnabled: true,
+            buttonTheme: {
+                    width: 45
+                },
             selected: 1
           },
 
 
           title: {
-            text: ''
+            text: 'Wetterstation Meersburg',
+            align: 'left',
+            x: 0
           },
 
-
+/*
           plotOptions: {
             line: {
               gapSize: 5
@@ -322,11 +330,31 @@
               borderWidth: 0
             }
           },
+          */
+          
+// test mit längerer animation falls nicht geht code oben verwenden
+            plotOptions: {
+              line: {
+                gapSize: 5
+              },
+              series: {
+                marker: {
+                radius: 2
+                },
+                animation: {
+                  duration: 20000
+                },
+                step: false,
+                turboThrehold: 1000,
+                borderWidth: 0
+              }
+            },
+          
 
-
+// hier stimmt das Datum nicht und auch die Einheiten sind alle geich
           tooltip: {
             valueDecimals: 1,
-            valueSuffix: '°F',
+            valueSuffix: '°C',
             xDateFormat: '%Y-%m-%d<br/>%1:%M:%S %p'
               // reformat the tooltips so that local times are displayed
               //formatter: function() {
@@ -340,7 +368,9 @@
           xAxis: {
             type: 'datetime',
             ordinal: false,
-            min: Date.UTC(2013, 02, 28),
+            min: Date.UTC(2016, 01, 01),
+
+
             dateTimeLabelFormats: {
               hour: '%l %p',
               minute: '%l:%M %p'
@@ -351,7 +381,7 @@
           },
           yAxis: [{
             title: {
-              text: 'Temperature °F'
+              text: 'Temperature °C'
             },
             id: 'T'
           }, {
@@ -522,7 +552,7 @@
 
   <div id="below chart">
 
-    <button style="width: 89px; margin-top: -18px;" value="Hide All" name="Hide All Button" onclick="HideAll();">Hide All</button>
+    <button style="width: 89px; margin-top: -18px; margin-left: 40px;" value="Hide All" name="Hide All Button" onclick="HideAll();">Hide All</button>
     <button style="width: 162px; margin-top: -18px;" value="Load More Data" name="Load More Data" onclick="loadOneChannel();">Load More Historical Data </button>
     <select id="Channel Select"></select>
     <select id="Loads">
