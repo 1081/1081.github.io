@@ -37,22 +37,24 @@
         key: 'XXXXXXXXXXXXXXXX',
         fieldList: [{
           field: 1, //Temperature DHT22
+          units: '°C',
           axis: 'T'
         }, {
           field: 2, //Humidity DHT22
-          axis: 'O'
+          units: '%',
+          axis: 'H'
         }, {
-          field: 3, //Dew Point Temperature
-          axis: 'O'
-        }, {
+        //  field: 3, //Dew Point Temperature
+        //  axis: 'O'
+        //}, {
           field: 4, //Pressure BMP180
-          axis: 'O'
-        }, {
-          field: 5, //Temperature BMP180
-          axis: 'T'
+          units:'hpa',
+          axis: 'P'
+        //}, {
+        //  field: 5, //Temperature BMP180
+        //  axis: 'T'
         }]
       });
-
 
     /*
       channelKeys.push({
@@ -268,9 +270,13 @@
 
           rangeSelector: {
             buttons: [{
-              count: 30,
-              type: 'minute',
-              text: '30 min'
+              //count: 60,
+              //type: 'minute',
+              //text: '60 min'
+            //}, {
+              count: 4,
+              type: 'hour',
+              text: '4 h'
             }, {
               count: 12,
               type: 'hour',
@@ -331,7 +337,7 @@
             }
           },
           */
-          
+
 // test mit längerer animation falls nicht geht code oben verwenden
             plotOptions: {
               line: {
@@ -341,20 +347,23 @@
                 marker: {
                 radius: 2
                 },
-                animation: {
-                  duration: 20000
-                },
                 step: false,
                 turboThrehold: 1000,
-                borderWidth: 0
+                borderWidth: 0,
+                states: {
+                    hover: {
+                      enabled: true,
+                      lineWidth: 2 //damit die eine Linie nicht dicker wird bei "maus over"
+                    }
+                }
               }
             },
-          
+
 
 // hier stimmt das Datum nicht und auch die Einheiten sind alle geich
           tooltip: {
             valueDecimals: 1,
-            valueSuffix: '°C',
+            //valueSuffix: ' '+fieldList[1].units, // ist unten in der Schleife
             xDateFormat: '%Y-%m-%d<br/>%1:%M:%S %p'
               // reformat the tooltips so that local times are displayed
               //formatter: function() {
@@ -379,18 +388,36 @@
               text: 'test'
             }
           },
-          yAxis: [{
+
+
+          yAxis: [ {
+            offset: 20,
             title: {
-              text: 'Temperature °C'
+              text: 'Temperatur °C'
             },
+            opposite: true,
             id: 'T'
+          }, {
+            title: {
+              text: 'Luftfeuchtigkeit %'
+            },
+            opposite: true,
+            id: 'H'
+          }, {
+            title: {
+              text: 'Luftdruck hpa'
+            },
+            opposite: false,
+            id: 'P'
           }, {
             title: {
               text: 'Other'
             },
-            opposite: true,
+            opposite: false,
             id: 'O'
           }],
+
+
           exporting: {
             enabled: true,
             csv: {
@@ -421,6 +448,7 @@
               data: channelKeys[channelIndex].fieldList[fieldIndex].data,
               index: channelKeys[channelIndex].fieldList[fieldIndex].series,
               yAxis: channelKeys[channelIndex].fieldList[fieldIndex].axis,
+              tooltip: { valueSuffix: ' '+channelKeys[channelIndex].fieldList[fieldIndex].units}, //mein CODE!!!
               //visible:false,
               name: channelKeys[channelIndex].fieldList[fieldIndex].name
             });
