@@ -391,30 +391,33 @@
 
 
           yAxis: [ {
-            offset: 20,
+            offset: 20, //Label nicht mehr in Graph
             title: {
-              text: 'Temperatur °C'
+              text: 'Temperatur °C',
+              rotation: 270
             },
             opposite: true,
             id: 'T'
           }, {
             title: {
-              text: 'Luftfeuchtigkeit %'
+              text: 'Luftfeuchtigkeit %',
+              rotation: 270
             },
             opposite: true,
             id: 'H'
           }, {
             title: {
-              text: 'Luftdruck hpa'
+              text: 'Luftdruck hpa',
+              rotation: 270
             },
-            opposite: false,
+            opposite: true,
             id: 'P'
-          }, {
-            title: {
-              text: 'Other'
-            },
-            opposite: false,
-            id: 'O'
+          //}, {
+          //  title: {
+          //    text: 'Other'
+          //  },
+          // opposite: false,
+          // id: 'O'
           }],
 
 
