@@ -28,10 +28,10 @@
 				Janet,3,16,13,15
 				
 			 */ 
-			$.get('reflisttest.csv', function(csv) {
+			$.get('data.csv', function(csv) {
 			    $('#container').highcharts({
 			        chart: {
-			        	type: 'scatter',
+			        	type: 'column',
             				zoomType: 'xy'
 			        },
 			        data: {
