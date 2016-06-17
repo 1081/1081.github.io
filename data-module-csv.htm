@@ -31,13 +31,14 @@
 			$.get('reflisttest.csv', function(csv) {
 			    $('#container').highcharts({
 			        chart: {
-			        	type: 'column'
+			        	type: 'scatter',
+            				zoomType: 'xy'
 			        },
 			        data: {
 			            csv: csv
 			        },
 			        title: {
-						text: 'Fruit Consumption'
+						text: 'Test-Titel'
 					},
 					yAxis: {
 						title: {
